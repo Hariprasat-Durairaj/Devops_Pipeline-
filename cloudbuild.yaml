@@ -8,19 +8,14 @@ steps:
   args: ["run", "deploy", "cloud-build", "--image", "northamerica-northeast2-docker.pkg.dev/protean-music-371922/hariprasath-100889196/appimg:$COMMIT_SHA", "--platform", "managed", "--region", "us-central1", "--allow-unauthenticated", "--concurrency", "1"]
 - name: 'gcr.io/cloud-builders/gcloud'
   entrypoint: 'gcloud'
-  args:
-    - 'source'
-    - 'repos'
-    - 'update'
-    - 'src/static/index.html'
-    - '--revision'
-    - 'HEAD'
-    - '--message'
-    - 'Update index.html title to Assignment 2 - 100889196'
-    - '--message-format'
-    - 'json'  # Change to a valid message format
-    - '--content-from-file'
-    - 'src/static/index.html'
+  args: ["config", "set", "project", "YOUR_PROJECT_ID"]
+- name: 'Copy updated file to Cloud Storage'
+  entrypoint: 'gsutil'
+  args: ["cp", "-r", "src/static/*", "gs://YOUR_BUCKET/src/static/"]
+#  OR
+# - name: 'Deploy function with updated file'
+#   entrypoint: 'gcloud'
+#   args: ["functions", "deploy", "YOUR_FUNCTION_NAME", "--runtime", "YOUR_RUNTIME", "--allow-unauthenticated", "--trigger-http", "--set-env-vars", "SERVICE_ACCOUNT=YOUR_SERVICE_ACCOUNT", "--source", "."]
 timeout: 600s
 substitutions:
   _COMMIT_SHA: ${_GITHUB_SHA}
