@@ -11,24 +11,11 @@ steps:
   args:
     - 'source'
     - 'repos'
-    - 'files'
     - 'update'
-    - 'index.html'
+    - 'src/static/index.html'
     - '--message'
     - 'Update index.html title to Assignment 2 - 100889196'
-    - '--content'
-    - 'src/static/index.html=Assignment 2 - 100889196'
-- name: 'gcr.io/cloud-builders/gcloud'
-  entrypoint: 'gcloud'
-  args:
-    - 'source'
-    - 'repos'
-    - 'update'
-    - '--add'
-    - 'index.html'
-    - '--message'
-    - 'Update index.html title to Assignment 2 - 100889196'
-    - '--content'
+    - '--content-from-file'
     - 'src/static/index.html'
 timeout: 600s
 substitutions:
