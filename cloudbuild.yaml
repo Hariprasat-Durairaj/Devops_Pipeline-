@@ -15,10 +15,10 @@ steps:
     - 'src/static/index.html'
     - '--revision'
     - 'HEAD'
-    - '--message-format'
-    - 'none'
     - '--message'
     - 'Update index.html title to Assignment 2 - 100889196'
+    - '--message-format'
+    - 'json'  # Change to a valid message format
     - '--content-from-file'
     - 'src/static/index.html'
 timeout: 600s
