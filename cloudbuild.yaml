@@ -16,6 +16,6 @@ substitutions:
   _COMMIT_SHA: ${_GITHUB_SHA}
 options:
   substitution_option: ALLOW_LOOSE
-  logging: CLOUD_STORAGE_ONLY
+  logging: GCS_ONLY
   machineType: N1_HIGHCPU_8
   defaultLogsBucketBehavior: REGIONAL_USER_OWNED_BUCKET
