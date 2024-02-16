@@ -1,14 +1,21 @@
 steps:
-  - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'us-central1-docker.pkg.dev/scenic-doodad-401715/hariprasath-100889196:${COMMIT_SHA}', '.']
-  - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'us-central1-docker.pkg.dev/scenic-doodad-401715/hariprasath-100889196:${COMMIT_SHA}']
-  - name: 'gcr.io/cloud-builders/gcloud'
-    args:
-      - 'run'
-      - 'deploy'
-      - 'your-service-name'
-      - '--image=us-central1-docker.pkg.dev/scenic-doodad-401715/hariprasath-100889196:${COMMIT_SHA}'
-      - '--platform=managed'
-      - '--region=us-central1'
-      - '--allow-unauthenticated'
+- name: 'gcr.io/cloud-builders/docker'
+  args: ["build", "-t", "hariprasath-100889196:$COMMIT_SHA", "."]
+- name: 'gcr.io/cloud-builders/docker'
+  args: ["push", "hariprasath-100889196:$COMMIT_SHA", "gcr.io/protean-music-371922/hariprasath-100889196"]
+- name: 'google/cloud-sdk'
+  entrypoint: 'gcloud'
+  args: ["config", "set", "project", "protean-music-371922"]
+  env: ["CLOUDSDK_CONTAINER_USE_V1=true"]
+- name: 'google/cloud-sdk'
+  entrypoint: 'gcloud'
+  args: ["run", "deploy", "cloud-build", "--image", "gcr.io/protean-music-371922/hariprasath-100889196:$COMMIT_SHA", "--platform", "managed", "--region", "us-central1", "--allow-unauthenticated", "--concurrency", "1"]
+  env: ["CLOUDSDK_CONTAINER_USE_V1=true"]
+timeout: 600s
+substitutions:
+  _COMMIT_SHA: ${_GITHUB_SHA}
+options:
+  substitution_option: ALLOW_LOOSE
+  logging: CLOUD_STORAGE_ONLY
+  machineType: N1_HIGHCPU_8
+  defaultLogsBucketBehavior: REGIONAL_USER_OWNED_BUCKET
