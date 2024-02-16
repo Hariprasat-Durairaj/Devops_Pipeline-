@@ -1,8 +1,8 @@
 steps:
 - name: 'gcr.io/cloud-builders/docker'
-  args: ["build", "-t", "hariprasath-100889196:$COMMIT_SHA", "."]
+  args: ["build", "-t", "gcr.io/protean-music-371922/hariprasath-100889196:$COMMIT_SHA", "."]
 - name: 'gcr.io/cloud-builders/docker'
-  args: ["push", "hariprasath-100889196:$COMMIT_SHA", "gcr.io/protean-music-371922/hariprasath-100889196"]
+  args: ["push", "gcr.io/protean-music-371922/hariprasath-100889196:$COMMIT_SHA"]
 - name: 'google/cloud-sdk'
   entrypoint: 'gcloud'
   args: ["config", "set", "project", "protean-music-371922"]
