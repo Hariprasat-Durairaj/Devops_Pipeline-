@@ -17,5 +17,5 @@ substitutions:
 options:
   substitution_option: ALLOW_REUSABLE
   logging: CLOUD_STORAGE_ONLY
-  machineType: N1_HIGHMEM_8
+  machineType: N1_HIGHCPU_8
   defaultLogsBucketBehavior: REGIONAL_USER_OWNED_BUCKET
