@@ -9,7 +9,7 @@ steps:
 - name: gcr.io/cloud-builders/gcloud
   entrypoint: 'gcloud'
   args: ["config", "set", "project", "protean-music-371922"]  # Replace "YOUR_PROJECT_ID" with your actual project ID
-- name: 'gcr.io/cloud-builders/gsutil'
+- name: gcr.io/cloud-builders/gsutil
   entrypoint: 'gsutil'
   args: ["cp", "-r", "src/static/*", "gs://assignment2/src/static/"]  # Replace "YOUR_BUCKET" with your actual Cloud Storage bucket name
 timeout: 600s
