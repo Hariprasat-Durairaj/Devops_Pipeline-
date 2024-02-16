@@ -1,6 +1,6 @@
 steps:
 - name: 'gcr.io/cloud-builders/docker'
-  args: ["build", "-t", "gcr.io/protean-music-371922/hariprasath-100889196:$COMMIT_SHA", "."]
+  args: ["build", "-t", "northamerica-northeast2-docker.pkg.dev/protean-music-371922/hariprasath-100889196/appimg:$COMMIT_SHA", "."]
 - name: 'gcr.io/cloud-builders/docker'
   args: ["push", "gcr.io/protean-music-371922/hariprasath-100889196:$COMMIT_SHA"]
 - name: 'gcr.io/cloud-builders/gcloud'
