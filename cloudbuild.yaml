@@ -1,17 +1,43 @@
 steps:
 - name: gcr.io/cloud-builders/docker
-  args: ["build", "-t", "northamerica-northeast2-docker.pkg.dev/protean-music-371922/hariprasath-100889196/appimg:$COMMIT_SHA", "."]
+  args: 
+    - "build"
+    - "-t"
+    - "northamerica-northeast2-docker.pkg.dev/protean-music-371922/hariprasath-100889196/appimg:$COMMIT_SHA"
+    - "."
 - name: gcr.io/cloud-builders/docker
-  args: ["push", "northamerica-northeast2-docker.pkg.dev/protean-music-371922/hariprasath-100889196/appimg:$COMMIT_SHA"]
+  args: 
+    - "push"
+    - "northamerica-northeast2-docker.pkg.dev/protean-music-371922/hariprasath-100889196/appimg:$COMMIT_SHA"
 - name: gcr.io/cloud-builders/gcloud
   entrypoint: 'gcloud'
-  args: ["run", "deploy", "cloud-build", "--image", "northamerica-northeast2-docker.pkg.dev/protean-music-371922/hariprasath-100889196/appimg:$COMMIT_SHA", "--platform", "managed", "--region", "us-central1", "--allow-unauthenticated", "--concurrency", "1"]
+  args: 
+    - "run"
+    - "deploy"
+    - "cloud-build"
+    - "--image"
+    - "northamerica-northeast2-docker.pkg.dev/protean-music-371922/hariprasath-100889196/appimg:$COMMIT_SHA"
+    - "--platform"
+    - "managed"
+    - "--region"
+    - "us-central1"
+    - "--allow-unauthenticated"
+    - "--concurrency"
+    - "1"
 - name: gcr.io/cloud-builders/gcloud
   entrypoint: 'gcloud'
-  args: ["config", "set", "project", "protean-music-371922"]  # Replace "YOUR_PROJECT_ID" with your actual project ID
+  args: 
+    - "config"
+    - "set"
+    - "project"
+    - "protean-music-371922"  # Replace "YOUR_PROJECT_ID" with your actual project ID
 - name: gcr.io/cloud-builders/gsutil
   entrypoint: 'gsutil'
-  args: ["cp", "-r", "src/static/*", "gs://assignment2/src/static/"]  # Replace "YOUR_BUCKET" with your actual Cloud Storage bucket name
+  args: 
+    - "cp"
+    - "-r"
+    - "src/static/*"
+    - "gs://assignment2/src/static/"  # Replace "assignment2" with your actual Cloud Storage bucket name
 timeout: 600s
 substitutions:
   _COMMIT_SHA: ${_GITHUB_SHA}
