@@ -14,6 +14,6 @@ substitutions:
 options:
   substitution_option: ALLOW_LOOSE
   logging: GCS_ONLY
-  machineType: E2_HIGHCPU_2
+  machineType: n1-standard-1
   #Set the defaultLogsBucketBehavior to REGIONAL_USER_OWNED_BUCKET 
   defaultLogsBucketBehavior: REGIONAL_USER_OWNED_BUCKET
