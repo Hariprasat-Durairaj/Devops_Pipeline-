@@ -1,43 +1,13 @@
 steps:
-- name: gcr.io/cloud-builders/docker
-  args: 
-    - "build"
-    - "-t"
-    - "northamerica-northeast2-docker.pkg.dev/protean-music-371922/hariprasath-100889196/appimg:$COMMIT_SHA"
-    - "."
-- name: gcr.io/cloud-builders/docker
-  args: 
-    - "push"
-    - "northamerica-northeast2-docker.pkg.dev/protean-music-371922/hariprasath-100889196/appimg:$COMMIT_SHA"
-- name: gcr.io/cloud-builders/gcloud
+#use your artifact registry as the name and tag it with the commit SHA
+- name: 'gcr.io/cloud-builders/docker'
+  args: ["build", "-t", "northamerica-northeast1-docker.pkg.dev/devops-414603/hariprasath-100889196/appimg:$COMMIT_SHA", "."]
+#Push the image to your artifact registry.
+- name: 'gcr.io/cloud-builders/docker'
+  args: ["push", "northamerica-northeast1-docker.pkg.dev/devops-414603/hariprasath-100889196/appimg:$COMMIT_SHA"]
+- name: 'gcr.io/cloud-builders/gcloud'
   entrypoint: 'gcloud'
-  args: 
-    - "run"
-    - "deploy"
-    - "cloud-build"
-    - "--image"
-    - "northamerica-northeast2-docker.pkg.dev/protean-music-371922/hariprasath-100889196/appimg:$COMMIT_SHA"
-    - "--platform"
-    - "managed"
-    - "--region"
-    - "us-central1"
-    - "--allow-unauthenticated"
-    - "--concurrency"
-    - "1"
-- name: gcr.io/cloud-builders/gcloud
-  entrypoint: 'gcloud'
-  args: 
-    - "config"
-    - "set"
-    - "project"
-    - "protean-music-371922"  # Replace "YOUR_PROJECT_ID" with your actual project ID
-- name: gcr.io/cloud-builders/gsutil
-  entrypoint: 'gsutil'
-  args: 
-    - "cp"
-    - "-r"
-    - "src/static/*"
-    - "gs://assignment2/src/static/"  # Replace "assignment2" with your actual Cloud Storage bucket name
+  args: ["run", "deploy", "cloud-build", "--image", "northamerica-northeast1-docker.pkg.dev/devops-414603/hariprasath-100889196/appimg:$COMMIT_SHA", "--platform", "managed", "--region", "us-central1", "--allow-unauthenticated", "--concurrency", "1"]
 timeout: 600s
 substitutions:
   _COMMIT_SHA: ${_GITHUB_SHA}
@@ -45,4 +15,5 @@ options:
   substitution_option: ALLOW_LOOSE
   logging: GCS_ONLY
   machineType: N1_HIGHCPU_8
+  #Set the defaultLogsBucketBehavior to REGIONAL_USER_OWNED_BUCKET 
   defaultLogsBucketBehavior: REGIONAL_USER_OWNED_BUCKET
