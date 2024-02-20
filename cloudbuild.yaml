@@ -1,13 +1,12 @@
 steps:
-#use your artifact registry as the name and tag it with the commit SHA
+# Build Docker image
 - name: 'gcr.io/cloud-builders/docker'
   args: ["build", "-t", "northamerica-northeast1-docker.pkg.dev/devops-414603/hariprasath-100889196/appimg:$COMMIT_SHA", "."]
-#Push the image to your artifact registry.
+# Push the image to Artifact Registry
 - name: 'gcr.io/cloud-builders/docker'
   args: ["push", "northamerica-northeast1-docker.pkg.dev/devops-414603/hariprasath-100889196/appimg:$COMMIT_SHA"]
+# Deploy the image to Cloud Run
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-  entrypoint: 'sh'
-  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
   entrypoint: 'sh'
   args:
     - '-c'
@@ -16,7 +15,7 @@ steps:
         --image=northamerica-northeast1-docker.pkg.dev/devops-414603/hariprasath-100889196/appimg:${_COMMIT_SHA} \
         --platform=managed \
         --region=us-central1 \
-        --port=3000 \
+        --port=8080 \
         --allow-unauthenticated
 timeout: 600s
 substitutions:
