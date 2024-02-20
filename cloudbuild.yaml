@@ -3,14 +3,12 @@ steps:
   args: ["build", "-t", "northamerica-northeast1-docker.pkg.dev/devops-414603/hariprasath-100889196/appimg:$COMMIT_SHA", "."]
 - name: 'gcr.io/cloud-builders/docker'
   args: ["push", "northamerica-northeast1-docker.pkg.dev/devops-414603/hariprasath-100889196/appimg:$COMMIT_SHA"]
-- name: 'gcr.io/cloud-builders/gcloud'
-  entrypoint: 'gcloud'
-  args: ["run", "deploy", "cloud-build", "--image", "northamerica-northeast1-docker.pkg.dev/devops-414603/hariprasath-100889196/appimg:$COMMIT_SHA", "--platform", "managed", "--region", "us-central1", "--allow-unauthenticated", "--concurrency", "1"]
+
 timeout: 600s
 substitutions:
   _COMMIT_SHA: ${_GITHUB_SHA}
 options:
   substitution_option: ALLOW_LOOSE
   logging: GCS_ONLY
-  machineType: N1_HIGHCPU_8
+  machineType: E2_HIGHCPU_2
   defaultLogsBucketBehavior: REGIONAL_USER_OWNED_BUCKET
