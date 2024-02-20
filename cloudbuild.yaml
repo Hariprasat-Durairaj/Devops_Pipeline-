@@ -27,4 +27,4 @@ options:
   defaultLogsBucketBehavior: REGIONAL_USER_OWNED_BUCKET
 images:
   # Define the images to store in Google Artifact Registry
-  - northamerica-northeast1-docker.pkg.dev/devops-414603/hariprasath-100889196/appimg:${_COMMIT_SHA}
+  - us-central1-docker.pkg.dev/devops-414603/hariprasath-100889196/appimg:${_COMMIT_SHA}
