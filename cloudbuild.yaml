@@ -14,7 +14,7 @@ steps:
       gcloud run deploy nodejs-app \
         --image=northamerica-northeast1-docker.pkg.dev/devops-414603/hariprasath-100889196/appimg:${_COMMIT_SHA} \
         --platform=managed \
-        --region=us-central1 \
+        --region=us-northamerica-northeast1 \
         --port=8080 \
         --allow-unauthenticated
 timeout: 600s
