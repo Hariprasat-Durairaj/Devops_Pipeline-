@@ -23,5 +23,5 @@ substitutions:
 options:
   substitution_option: ALLOW_LOOSE
   logging: GCS_ONLY
-  machineType: E2_HIGHCPU_2
+  machineType: 1_HIGHCPU_8
   defaultLogsBucketBehavior: REGIONAL_USER_OWNED_BUCKET
