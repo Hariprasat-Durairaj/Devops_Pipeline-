@@ -23,7 +23,7 @@ substitutions:
 options:
   substitution_option: ALLOW_LOOSE
   logging: GCS_ONLY
-  machineType: E2_HIGHCPU_2
+  machineType: N1_HIGHCPU_8
   defaultLogsBucketBehavior: REGIONAL_USER_OWNED_BUCKET
 images:
   # Define the images to store in Google Artifact Registry
