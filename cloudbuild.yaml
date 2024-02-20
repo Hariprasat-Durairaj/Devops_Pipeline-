@@ -1,22 +1,11 @@
 steps:
-# Build Docker image
 - name: 'gcr.io/cloud-builders/docker'
   args: ["build", "-t", "northamerica-northeast1-docker.pkg.dev/devops-414603/hariprasath-100889196/appimg:$COMMIT_SHA", "."]
-# Push the image to Artifact Registry
 - name: 'gcr.io/cloud-builders/docker'
   args: ["push", "northamerica-northeast1-docker.pkg.dev/devops-414603/hariprasath-100889196/appimg:$COMMIT_SHA"]
-# Deploy the image to Cloud Run
-- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-  entrypoint: 'sh'
-  args:
-    - '-c'
-    - |
-      gcloud run deploy nodejs-app \
-        --image=us-central1-docker.pkg.dev/devops-414603/hariprasath-100889196/appimg:${_COMMIT_SHA} \
-        --platform=managed \
-        --region=us-central1 \
-        --port=8080 \
-        --allow-unauthenticated
+- name: 'gcr.io/cloud-builders/gcloud'
+  entrypoint: 'gcloud'
+  args: ["run", "deploy", "cloud-build", "--image", "northamerica-northeast1-docker.pkg.dev/devops-414603/hariprasath-100889196/appimg:$COMMIT_SHA", "--platform", "managed", "--region", "us-central1", "--allow-unauthenticated", "--concurrency", "1"]
 timeout: 600s
 substitutions:
   _COMMIT_SHA: ${_GITHUB_SHA}
@@ -25,6 +14,3 @@ options:
   logging: GCS_ONLY
   machineType: N1_HIGHCPU_8
   defaultLogsBucketBehavior: REGIONAL_USER_OWNED_BUCKET
-images:
-  # Define the images to store in Google Artifact Registry
-  - us-central1-docker.pkg.dev/devops-414603/hariprasath-100889196/appimg:${_COMMIT_SHA}
