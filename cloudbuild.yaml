@@ -12,7 +12,7 @@ steps:
     - '-c'
     - |
       gcloud run deploy nodejs-app \
-        --image=northamerica-northeast1-docker.pkg.dev/devops-414603/hariprasath-100889196/appimg:${_COMMIT_SHA} \
+        --image=us-central1-docker.pkg.dev/devops-414603/hariprasath-100889196/appimg:${_COMMIT_SHA} \
         --platform=managed \
         --region=us-central1 \
         --port=8080 \
