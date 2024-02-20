@@ -1,19 +1,28 @@
 steps:
-#use your artifact registry as the name and tag it with the commit SHA
-- name: 'gcr.io/cloud-builders/docker'
-  args: ["build", "-t", "northamerica-northeast1-docker.pkg.dev/devops-414603/hariprasath-100889196/appimg:$COMMIT_SHA", "."]
-#Push the image to your artifact registry.
-- name: 'gcr.io/cloud-builders/docker'
-  args: ["push", "northamerica-northeast1-docker.pkg.dev/devops-414603/hariprasath-100889196/appimg:$COMMIT_SHA"]
-- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-  entrypoint: 'gcloud'
-  args: ["run", "deploy", "nodejs-app", "--image", "northamerica-northeast1-docker.pkg.dev/devops-414603/hariprasath-100889196/appimg:$COMMIT_SHA", "--platform", "managed", "--region", "us-central1", "--allow-unauthenticated", "--concurrency", "1"]
-timeout: 600s
-substitutions:
-  _COMMIT_SHA: ${_GITHUB_SHA}
+  # Build the Docker image kevin
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'us-central1-docker.pkg.dev/devops-414603/hariprasath-100889196/appimg:${COMMIT_SHA}', '.']
+  # Push the Docker image to the artifact registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'us-central1-docker.pkg.dev/devops-414603/hariprasath-100889196/appimg:${COMMIT_SHA}']
+  # Deploy the Docker container to Google Cloud Run
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: 'sh'
+    args:
+      - '-c'
+      - |
+        gcloud run deploy nodejs-app \
+          --image=us-central1-docker.pkg.dev/devops-414603/hariprasath-100889196/appimg:${COMMIT_SHA} \
+          --platform=managed \
+          --region=us-central1 \
+          --port=3000 \
+          --allow-unauthenticated
 options:
-  substitution_option: ALLOW_LOOSE
-  logging: GCS_ONLY
-  machineType: N1_HIGHCPU_8
-  #Set the defaultLogsBucketBehavior to REGIONAL_USER_OWNED_BUCKET 
-  defaultLogsBucketBehavior: REGIONAL_USER_OWNED_BUCKET
+  # Set defaultLogsBucketBehavior to REGIONAL_USER_OWNED_BUCKET
+  # defaultLogsBucket: 'gs://your-build-logs-bucket' # Replace with your build logs bucket
+  defaultLogsBucketBehavior: 'REGIONAL_USER_OWNED_BUCKET'
+ 
+images:
+# Store images in Google Artifact Registry
+  - us-central1-docker.pkg.dev/devops-414603/hariprasath-100889196/appimg:${COMMIT_SHA}
+ 
