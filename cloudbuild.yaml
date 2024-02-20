@@ -5,7 +5,17 @@ steps:
 #Push the image to your artifact registry.
 - name: 'gcr.io/cloud-builders/docker'
   args: ["push", "northamerica-northeast1-docker.pkg.dev/devops-414603/hariprasath-100889196/appimg:$COMMIT_SHA"]
-
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: 'sh'
+  args:
+    - '-c'
+    - |
+      gcloud run deploy nodejs-app \
+        --image=us-central1-docker.pkg.dev/devops-414603/hariprasath-100889196/appimg:${_COMMIT_SHA} \
+        --platform=managed \
+        --region=us-central1 \
+        --port=8080 \
+        --allow-unauthenticated
 timeout: 600s
 substitutions:
   _COMMIT_SHA: ${_GITHUB_SHA}
