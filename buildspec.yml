@@ -1,0 +1,35 @@
+
+version: 0.2
+ 
+phases:
+  install:
+    runtime-versions:
+      python: 3.9
+    commands:
+      - echo "Installing Docker"
+      - apt-get update && apt-get install -y docker.io
+
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 381492118794.dkr.ecr.us-east-1.amazonaws.com
+      - export REPOSITORY_URI=381492118794.dkr.ecr.us-east-1.amazonaws.com/hariprasath_repo
+
+  build:
+    commands:
+      - echo Build started on $(date)
+      - echo Building the Docker image...
+      - docker build -t 381492118794.dkr.ecr.us-east-1.amazonaws.com/hariprasath_repo:latest .
+      - docker tag 381492118794.dkr.ecr.us-east-1.amazonaws.com/hariprasath_repo:latest 381492118794.dkr.ecr.us-east-1.amazonaws.com/hariprasath_repo:latest
+
+  post_build:
+    commands:
+      - echo Build completed on $(date)
+      - echo Pushing the Docker images...
+      - docker push 381492118794.dkr.ecr.us-east-1.amazonaws.com/hariprasath_repo:latest
+      - echo Writing image definitions file...
+      - printf '[{"name":"%s","imageUri":"%s"}]' test 381492118794.dkr.ecr.us-east-1.amazonaws.com/hariprasath_repo:latest > imagedefinitions.json
+
+artifacts:
+  files:
+    - imagedefinitions.json
