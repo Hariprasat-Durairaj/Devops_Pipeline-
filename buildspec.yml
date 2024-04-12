@@ -1,13 +1,12 @@
-
 version: 0.2
- 
+
 phases:
   install:
     runtime-versions:
-      python: 3.9
+      nodejs: 19.7.0
     commands:
       - echo "Installing Docker"
-      - apt-get update && apt-get install -y docker.io
+      - apk update && apk add docker
 
   pre_build:
     commands:
