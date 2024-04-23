@@ -22,8 +22,8 @@ COPY --chown=node:node . .
 # Run npm install to install Node.js packages
 RUN npm install
 
-# Expose port 8080
-EXPOSE 8080
+# Expose port 80
+EXPOSE 80
 
 # Set the default execution command
 CMD ["node", "src/index.js"]
