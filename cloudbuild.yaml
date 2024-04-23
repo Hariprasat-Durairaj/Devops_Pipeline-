@@ -15,7 +15,7 @@ steps:
           --image=us-central1-docker.pkg.dev/devops-midterm/hariprasath-100889196/gcpimage:${COMMIT_SHA} \
           --platform=managed \
           --region=us-central1 \
-          --port=8080 \
+          --port=80 \
           --allow-unauthenticated
 options:
   # Set defaultLogsBucketBehavior to REGIONAL_USER_OWNED_BUCKET
